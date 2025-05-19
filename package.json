@@ -1,0 +1,19 @@
+{
+  "name": "mi-app",
+  "version": "1.0.0",
+  "description": "Una aplicación Node.js con Express que sirve HTML y tiene CI/CD con Docker y GitHub Actions",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "mocha",
+    "coverage": "nyc npm test"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3",
+    "nyc": "^15.1.0"
+  }
+}
