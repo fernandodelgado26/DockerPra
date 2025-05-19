@@ -12,8 +12,8 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "mocha": "^10.2.0",
-    "supertest": "^6.3.3",
-    "nyc": "^15.1.0"
+    "mocha": "^10.8.2",
+    "nyc": "^15.1.0",
+    "supertest": "^6.3.3"
   }
 }
