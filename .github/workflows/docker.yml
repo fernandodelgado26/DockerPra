@@ -1,43 +1,31 @@
-name: CI con Docker y Pruebas
+name: Docker CI
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - master
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v2
+      - name: Give execute permissions to mocha
+        run: chmod +x ./node_modules/.bin/mocha
 
-      - name: Instalar Node.js
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Instalar dependencias
+      - name: Install dependencies
         run: npm install
 
-      - name: Ejecutar pruebas con npx
-        run: npx mocha
+      - name: Give execute permissions to mocha
+        run: chmod +x ./node_modules/.bin/mocha
 
-      - name: Calcular cobertura
-        run: |
-          npx nyc npx mocha
-          npx nyc report --reporter=text
-
-      - name: Construir imagen Docker
-        run: docker build -t mi-app .
-
-      - name: Iniciar sesión en Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Subir imagen a Docker Hub
-        run: docker push mi-app
+      - name: Run unit tests
+        run: npm test
