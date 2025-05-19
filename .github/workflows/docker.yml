@@ -1,42 +1,43 @@
-name: CI/CD Node App with Docker
+name: CI con Docker y Pruebas
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [main]
   pull_request:
-    branches: [ "master" ]
+    branches: [main]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repositorio
-      uses: actions/checkout@v3
+      - name: Clonar repositorio
+        uses: actions/checkout@v2
 
-    - name: Configurar Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Instalar dependencias
-      run: npm install
+      - name: Instalar dependencias
+        run: npm install
 
-    - name: Ejecutar pruebas
-      run: npm test
+      - name: Ejecutar pruebas con npx
+        run: npx mocha
 
-    - name: Calcular cobertura
-      run: |
-        npx nyc npm test
-        npx nyc report --reporter=text
+      - name: Calcular cobertura
+        run: |
+          npx nyc npx mocha
+          npx nyc report --reporter=text
 
-    - name: Construir imagen Docker
-      run: docker build -t mi-app .
+      - name: Construir imagen Docker
+        run: docker build -t mi-app .
 
-    - name: Iniciar sesión en Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Iniciar sesión en Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Etiquetar y subir imagen
-      run: |
-        docker tag mi-app ${{ secrets.DOCKER_USERNAME }}/mi-app:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/mi-app:latest
+      - name: Subir imagen a Docker Hub
+        run: docker push mi-app
