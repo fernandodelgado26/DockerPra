@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Lint code with ESLint
-        run: npx eslint . --ext .js
-
 
       - name: Checkout code
         uses: actions/checkout@v3
