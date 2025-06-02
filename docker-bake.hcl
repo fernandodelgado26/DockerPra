@@ -5,5 +5,5 @@ group "default" {
 target "app" {
   context    = "."
   dockerfile = "Dockerfile"
-  tags       = ["app:bake"]
+  tags       = ["fernando261002/calculadora:latest"]
 }
