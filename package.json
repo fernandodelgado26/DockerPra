@@ -9,7 +9,8 @@
     "coverage": "nyc npm test"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mi-app": "file:"
   },
   "devDependencies": {
     "eslint": "^9.27.0",
